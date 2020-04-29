@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import {
   getDeployments,
   removeDeployment,
 } from "../../redux/actions/deploymentActions";
 import { Accordion, Card, Button } from "react-bootstrap";
 
-const DeploymentList = ({ deployments, getDeployments, removeDeployment }) => {
+const DeploymentList = ({ getDeployments, removeDeployment }) => {
   useEffect(() => {
     getDeployments();
   }, []);
@@ -14,6 +14,8 @@ const DeploymentList = ({ deployments, getDeployments, removeDeployment }) => {
   const onDeleteHandler = (id) => {
     removeDeployment(id);
   };
+
+  const deployments = useSelector(state => state.deployment.deployments);
 
   return (
     <div>
@@ -62,13 +64,6 @@ const DeploymentList = ({ deployments, getDeployments, removeDeployment }) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    deployments: state.deployment.deployments,
-    errors: state.errors,
-  };
-}
-
-export default connect(mapStateToProps, { getDeployments, removeDeployment })(
+export default connect(null, { getDeployments, removeDeployment })(
   DeploymentList
 );

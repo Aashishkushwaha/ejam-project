@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { addDeployment } from "../../redux/actions/deploymentActions";
 import { Form, Button } from "react-bootstrap";
+import { useSelector } from 'react-redux';
+
 
 const DeploymentForm = (props) => {
-  const { errors } = props;
-
+  const errors = useSelector(state => state.errors);
+  
   const initialState = {
     url: "",
     templateName: "",
@@ -79,11 +81,4 @@ const DeploymentForm = (props) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    deployments: state.deployment.deployments,
-    errors: state.errors,
-  };
-}
-
-export default connect(mapStateToProps, { addDeployment })(DeploymentForm);
+export default connect(null, { addDeployment })(DeploymentForm);
