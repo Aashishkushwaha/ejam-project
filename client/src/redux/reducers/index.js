@@ -4,5 +4,5 @@ import errorReducer from './error';
 
 export default combineReducers({
   deployment: deploymentReducer,
-  error: errorReducer
+  errors: errorReducer
 })

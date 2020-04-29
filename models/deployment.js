@@ -10,7 +10,7 @@ let deploymentSchema = mongoose.Schema({
     required: true
   },
   version: {
-    type: String,
+    type: Array,
     required: true
   },
   deployedAt: {

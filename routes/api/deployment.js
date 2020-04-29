@@ -17,23 +17,31 @@ router.get("/get", (req, res) => {
 // @access public
 // @desc add deployment
 router.post("/add", (req, res) => {
-  const { isValid, errors } = deploymentValidor(req.body);
-  
+  let { deployment } = req.body;
+
+  const { isValid, errors } = deploymentValidor(deployment);
+
   if (!isValid) {
-    console.log('/add errors : ',errors);
     return res.status(400).json(errors);
   }
 
+  deployment.version = deployment.version.split(",");
+  deployment.version = deployment.version.map((version) => version.trim());
+
   let newDeployment = new Deployment({
-    url: req.body.url,
-    templateName: req.body.templateName,
-    version: req.body.version,
+    url: deployment.url,
+    templateName: deployment.templateName,
+    version: deployment.version,
   });
 
   newDeployment
     .save()
-    .then((deployment) => res.status(201).send(deployment))
-    .catch((error) => res.status(400).send(error));
+    .then((deployment) => {
+      return res.status(201).json(deployment);
+    })
+    .catch((error) => {
+      return res.status(400).json(error);
+    });
 });
 
 // @route /api/deployments/delete/:deploymentId
@@ -42,7 +50,7 @@ router.post("/add", (req, res) => {
 // @desc delete deployment
 router.delete("/delete/:deploymentId", (req, res) => {
   let id = req.params.deploymentId;
-  
+
   Deployment.findById(id)
     .then((deployment) => {
       deployment

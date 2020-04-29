@@ -11,10 +11,13 @@ let initialState = {
 let deploymentReducer = (state = initialState, action) => {
   switch(action.type) {
     case ADD_DEPLOYMENT: 
-      return [...state, action.payload]
+      return {...state, deployments: [...state.deployments, action.payload]}
     case GET_DEPLOYMENTS: 
       return {...state, deployments: action.payload}
-    case REMOVE_DEPLOYMENT: return state
+    case REMOVE_DEPLOYMENT: 
+      let deployments = state.deployments;
+      deployments = deployments.filter(deployment => deployment._id !== action.payload )
+      return {...state, deployments: deployments}
     default: return state
   }
 }

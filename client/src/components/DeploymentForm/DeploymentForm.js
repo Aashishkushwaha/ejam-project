@@ -1,70 +1,81 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { addDeployment } from "../../redux/actions/deploymentActions";
+import { Form, Button } from "react-bootstrap";
 
 const DeploymentForm = (props) => {
-  // useEffect(() => {
-  //   props.addDeployment();
-  // }, [])
+  const { errors } = props;
+
   const initialState = {
-    url: '',
-    templateName: '',
-    version: ''
-  }
+    url: "",
+    templateName: "",
+    version: "",
+  };
 
-  const [ state, setState ] = useState(initialState)
+  const [state, setState] = useState(initialState);
 
-  const onChangeHandler = e => {
+  const onChangeHandler = (e) => {
     setState({
-      ...state, [e.target.id]: e.target.value
-    })
-  }
+      ...state,
+      [e.target.id]: e.target.value,
+    });
+  };
 
-  const onSubmitHandler = e => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(state);
     props.addDeployment(state);
     setState(initialState);
-  }
+  };
 
   return (
-    <div>
-      <main>
-        <h1>Deployment Form</h1>
-        <form onSubmit={onSubmitHandler}>
-          <div className="form-group">
-            <label htmlFor="url">Url : </label>
-            <input
-              type="url"
-              id="url"
-              value={state.url}
-              onChange={onChangeHandler}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="templateName">Template Name : </label>
-            <input
-              type="text"
-              id="templateName"
-              value={state.templateName}
-              onChange={onChangeHandler}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="version">Version : </label>
-            <input
-              type="text"
-              id="version"
-              value={state.version}
-              onChange={onChangeHandler}
-            />
-          </div>
-          <div className="form-group">
-            <button type="submit"> Deploy </button>
-          </div>
-        </form>
-      </main>
-    </div>
+    <Form onSubmit={onSubmitHandler}>
+      <fieldset>
+        <legend>Add Deployment</legend>
+        <Form.Group>
+          <Form.Label htmlFor="url">Url : </Form.Label>
+          <Form.Control
+            type="url"
+            placeholder="Enter valid Url"
+            id="url"
+            value={state.url}
+            onChange={onChangeHandler}
+          />
+          {errors.url && <span className="error">{errors.url}</span>}
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label htmlFor="templateName">Template Name : </Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter Template"
+            id="templateName"
+            value={state.templateName}
+            onChange={onChangeHandler}
+          />
+          {errors.templateName && (
+            <span className="error">{errors.templateName}</span>
+          )}
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label htmlFor="version">
+            Version ( Use comma ( , ) to enter multiple versions ) :{" "}
+          </Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter version(s)"
+            id="version"
+            value={state.version}
+            onChange={onChangeHandler}
+          />
+          {errors.version && <span className="error">{errors.version}</span>}
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </fieldset>
+    </Form>
   );
 };
 

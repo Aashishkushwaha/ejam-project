@@ -3,7 +3,6 @@ import {
 } from '../actions/types';
 
 let errorReducer = (state = {}, action) => {
-  console.log('inside reducer', action);
   switch(action.type) {
     case GET_ERRORS: 
       return action.errors
