@@ -18,8 +18,11 @@ router.get("/get", (req, res) => {
 // @desc add deployment
 router.post("/add", (req, res) => {
   const { isValid, errors } = deploymentValidor(req.body);
-
-  if (!isValid) return res.json(errors);
+  
+  if (!isValid) {
+    console.log('/add errors : ',errors);
+    return res.status(400).json(errors);
+  }
 
   let newDeployment = new Deployment({
     url: req.body.url,
